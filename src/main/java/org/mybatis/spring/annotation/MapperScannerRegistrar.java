@@ -69,6 +69,7 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
    */
   @Override
   public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
+    //mybatis2.x版本 可以通过获取到MapperScan注解上的元数据
     AnnotationAttributes mapperScanAttrs = AnnotationAttributes
         .fromMap(importingClassMetadata.getAnnotationAttributes(MapperScan.class.getName()));
     if (mapperScanAttrs != null) {
@@ -80,6 +81,8 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
   void registerBeanDefinitions(AnnotationMetadata annoMeta, AnnotationAttributes annoAttrs,
       BeanDefinitionRegistry registry, String beanName) {
 
+    //MapperScannerConfigurer implements BeanDefinitionRegistryPostProcessor 创建的一个beanDefinition
+    // #postProcessBeanDefinitionRegistry方法完成扫描
     BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(MapperScannerConfigurer.class);
     builder.addPropertyValue("processPropertyPlaceHolders", true);
 
