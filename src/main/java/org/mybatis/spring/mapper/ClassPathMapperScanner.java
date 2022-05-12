@@ -134,6 +134,8 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
       acceptAllInterfaces = false;
     }
 
+    //这个过滤器非常重要 就是去扩展了spring扫描的过滤规则 让spring把配置的扫描包路径下的什么类给扫描出来
+    //此处 mybatis配置的默认的过滤策略是 把扫描包路径下所有的类都给扫描到spring的bdMap中
     if (acceptAllInterfaces) {
       // default include filter that accepts all classes
       addIncludeFilter(new TypeFilter() {
