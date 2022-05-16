@@ -354,6 +354,7 @@ public class MapperScannerConfigurer
       processPropertyPlaceHolders();
     }
 
+    //自定义的扫描器
     ClassPathMapperScanner scanner = new ClassPathMapperScanner(registry);
     scanner.setAddToConfig(this.addToConfig);
     scanner.setAnnotationClass(this.annotationClass);
@@ -365,13 +366,16 @@ public class MapperScannerConfigurer
     scanner.setResourceLoader(this.applicationContext);
     scanner.setBeanNameGenerator(this.nameGenerator);
     scanner.setMapperFactoryBeanClass(this.mapperFactoryBeanClass);
+
     if (StringUtils.hasText(lazyInitialization)) {
       scanner.setLazyInitialization(Boolean.valueOf(lazyInitialization));
     }
     if (StringUtils.hasText(defaultScope)) {
       scanner.setDefaultScope(defaultScope);
     }
+    //注册默认的过滤策略 即mybatis-spring为什么能实现只扫描出来包路径下的mapper接口文件呢 就是通过过滤器
     scanner.registerFilters();
+    //使用spring的扫描机制 将包路径下的mapper接口都给扫描出来 然后调用自定义的处理bd的逻辑 生成动态代理后再放入到spring的bdmap中
     scanner.scan(
         StringUtils.tokenizeToStringArray(this.basePackage, ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS));
   }
